@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" type="text/css" href="res/style.css">
+    </head>
+<body>
+<div id='map'></div>
+<div id='features'>
+    <section id='welcome' class='active'>
+        <h3>Olá CSCW!!!</br>Eu sou Gustavo Olivier</br>matrícula:0050012081</h3>
+        <p><img src="https://avatars1.githubusercontent.com/u/35310317" height="300"><br/>Bem-vindo aos meus mapas. Conheça um lugar que gostei de conhecer e outras 2 sugestões de amigos.</p>
+    </section>
+    <section id='Meu1' class='active'>
+        <p class="timepoint">Minha dica</p>
+        <h3>Campo de São Bento</h3>
+        <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Campodesaobento.JPG/220px-Campodesaobento.JPG" width="350"><br/>Um parque florido para aqueles que desejam visitar o Canadá</p>
+    </section>
+     <section id='Amigo1'>
+        <p class="timepoint">Dica do BipBop</p>
+        <h3>Restaurante À Mineira</h3>
+        <p><img src="https://restorando-res.cloudinary.com/image/upload/b_rgb:000000,c_pad,f_auto,g_center,h_720,q_auto:eco,w_1280/v1/restaurant_photos/s//10132/89221/restaurante_a-mineira-sao-francisco_niteroi_am_fac.jpg" width="350"/>
+    </section>
+    <section id='Amigo2'>
+        <p class="timepoint">Dica do Saitama</p>
+        <h3>Super mercado Pão de Açúcar</h3>
+        <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Paodea%C3%A7ucar.jpg/240px-Paodea%C3%A7ucar.jpg" width="350" />
+    </section>
+</div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiYWxleC1zYWxnYWRvIiwiYSI6ImNqbnc2OHdreTAwMXcza3B0bzdvOGZhZWEifQ.GAqMlYzetVlP7lb8eW7zUw';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v10',
+        bearing: 0,
+        center: [-43.106577,-22.896528],
+        zoom: 17,
+        speed: 0.8,
+        pitch: 0
+});
+var chapters = {
+    'welcome': {
+        bearing: 0,
+        center: [-43.107562,-22.904364],
+        zoom: 17,
+        speed: 0.8,
+        pitch: 0
+    },
+    'Meu1': { //Meu1
+        bearing: 0,
+        center: [-43.164668,-22.954058],
+        zoom: 19,
+        pitch: 54.00
+    },
+    'Amigo1': { //Amigo 1
+        center: [-43.093718,-22.921139],
+        bearing: 1.60,
+        zoom: 18.89,
+        speed: 0.6,
+        pitch: 59.00
+    },
+    'Amigo2': { //Amigo 2
+        bearing: 1.00,
+        center: [-43.099704,-22.903208],
+        zoom: 18,
+        speed: 0.6,
+        pitch: 60
+    }
+};
+// On every scroll event, check which element is on screen
+window.onscroll = function() {
+    var chapterNames = Object.keys(chapters);
+    for (var i = 0; i < chapterNames.length; i++) {
+        var chapterName = chapterNames[i];
+        if (isElementOnScreen(chapterName)) {
+            setActiveChapter(chapterName);
+            break;
+        }
+    }
+};
+var activeChapterName = '';
+function setActiveChapter(chapterName) {
+    if (chapterName === activeChapterName) return;
+    map.flyTo(chapters[chapterName]);
+    document.getElementById(chapterName).setAttribute('class', 'active');
+    document.getElementById(activeChapterName).setAttribute('class', '');
+    activeChapterName = chapterName;
+}
+function isElementOnScreen(id) {
+    var element = document.getElementById(id);
+    var bounds = element.getBoundingClientRect();
+    return bounds.top < window.innerHeight && bounds.bottom > 0;
+}
+</script>
+</body>
+</html>
